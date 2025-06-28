@@ -148,7 +148,7 @@ const ContactButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isEm
   const handleClick = (e: React.MouseEvent) => {
     if (onClick) {
       e.preventDefault()
-      onClick()
+      onClick(e)
     }
     if ('vibrate' in navigator && window.innerWidth < 768) {
       navigator.vibrate(5)
