@@ -17,7 +17,7 @@ const ZenHerbs = dynamic(() => import('./ZenHerbs'), {
 })
 
 // Tooltip component inspired by Headless UI patterns
-const Tooltip = ({ children, content, isDarkMode }) => {
+const Tooltip = ({ children, content, isDarkMode }: { children: React.ReactNode; content: string; isDarkMode: boolean }) => {
   const [showTooltip, setShowTooltip] = useState(false)
   
   return (
