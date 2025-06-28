@@ -1,0 +1,324 @@
+"use client"
+
+import React, { useEffect, useRef } from 'react'
+
+interface HerbProps {
+  index: number
+  obstacles: Array<{
+    x: number
+    y: number
+    width: number
+    height: number
+    type?: 'rect' | 'circle'
+    radius?: number
+  }>
+}
+
+// Herb SVG Component
+const HerbSVG: React.FC<{ type: string; index: number }> = ({ type, index }) => {
+  const colors = {
+    'thai-basil': ['#22c55e', '#16a34a', '#059669'],
+    'cilantro': ['#4ade80', '#22c55e', '#16a34a'],
+    'lemongrass': ['#bef264', '#a3e635', '#84cc16'],
+    'kaffir': ['#059669', '#047857', '#065f46']
+  }
+  
+  const herbColors = colors[type as keyof typeof colors] || colors['thai-basil']
+  
+  if (type === 'lemongrass') {
+    return (
+      <svg width="24" height="65" viewBox="0 0 24 65" fill="none" style={{ filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.35))' }}>
+        <path d="M12 0 C11.8 8 11.5 18 11.2 28 C11 38 10.8 48 11 56 C11.2 60 11.5 63 12 65 C12.5 63 12.8 60 13 56 C13.2 48 13 38 12.8 28 C12.5 18 12.2 8 12 0" fill={herbColors[0]} />
+        <path d="M7 4 C6.5 12 6 22 5.5 32 C5 42 4.8 52 5.2 58 C5.5 62 6 64 6.5 65 C7 64 7.2 62 7.5 58 C7.8 52 8 42 7.8 32 C7.5 22 7.2 12 7 4" fill={herbColors[1]} opacity="0.9" />
+        <path d="M17 3 C16.8 11 16.5 21 16.5 31 C16.5 41 16.8 51 17.2 57 C17.5 61 18 63 18.5 64 C19 63 19.2 61 19.5 57 C19.8 51 20 41 19.8 31 C19.5 21 19 11 17 3" fill={herbColors[2]} opacity="0.85" />
+      </svg>
+    )
+  } else if (type === 'kaffir') {
+    return (
+      <svg width="32" height="46" viewBox="0 0 32 46" fill="none" style={{ filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.35))' }}>
+        <path d="M16 2 C10 2 6 6 5 11 C4 16 6 20 10 22 C12 22.5 14 22.5 16 22 C16.5 21.8 17 21.5 17.5 21 C18 21.5 18.5 21.8 19 22 C21 22.5 23 22.5 25 22 C29 20 31 16 30 11 C29 6 25 2 19 2" fill={herbColors[0]} />
+        <path d="M16 22 C15.5 22 15 22.2 14.5 22.5 C14 22.8 13.5 23 13 23.5 C10 25 6 29 5 34 C4 39 6 43 11 45 C14 46 16 46 16 46 C16 46 18 46 21 45 C26 43 28 39 27 34 C26 29 22 25 19 23.5 C18.5 23 18 22.8 17.5 22.5 C17 22.2 16.5 22 16 22" fill={herbColors[0]} />
+        <path d="M16 2 C16 12 16 22 16 22 C16 22 16 34 16 46" stroke={herbColors[2]} strokeWidth="1" opacity="0.7" />
+      </svg>
+    )
+  } else if (type === 'cilantro') {
+    return (
+      <svg width="28" height="32" viewBox="0 0 28 32" fill="none" style={{ filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.35))' }}>
+        <path d="M14 28 C11 28 9 26 8 23 C7 20 8 18 10 16 C12 15 14 15 16 16 C18 15 20 15 22 16 C24 18 25 20 24 23 C23 26 21 28 18 28 C17 28 16 28 14 28" fill={herbColors[0]} />
+        <path d="M8 20 C5 20 3 18 2 15 C1 12 2 10 4 8 C6 7 8 7 10 8 C12 10 13 12 12 15 C11 18 9 20 8 20" fill={herbColors[0]} />
+        <path d="M20 20 C23 20 25 18 26 15 C27 12 26 10 24 8 C22 7 20 7 18 8 C16 10 15 12 16 15 C17 18 19 20 20 20" fill={herbColors[0]} />
+        <path d="M10 12 C8 12 6 10 5 8 C4 6 5 4 7 3 C9 2 11 2 12 3 C13 4 14 6 13 8 C12 10 11 12 10 12" fill={herbColors[0]} opacity="0.9" />
+        <path d="M18 12 C20 12 22 10 23 8 C24 6 23 4 21 3 C19 2 17 2 16 3 C15 4 14 6 15 8 C16 10 17 12 18 12" fill={herbColors[0]} opacity="0.9" />
+      </svg>
+    )
+  } else { // thai-basil
+    return (
+      <svg width="30" height="36" viewBox="0 0 30 36" fill="none" style={{ filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.35))' }}>
+        <path d="M15 1 C10 2 6 5 4 10 C2 15 2 21 4 26 C6 31 10 34 15 36 C20 34 24 31 26 26 C28 21 28 15 26 10 C24 5 20 2 15 1" fill={herbColors[0]} />
+        <path d="M15 1 L15 36" stroke={herbColors[2]} strokeWidth="0.8" opacity="0.7" />
+        <path d="M15 6 C11 7 8 9 6 11 M15 11 C11 12 8 14 6 16 M15 16 C11 17 8 19 6 21 M15 21 C11 22 8 24 6 26 M15 26 C11 27 8 29 6 31" stroke={herbColors[2]} strokeWidth="0.5" opacity="0.5" />
+        <path d="M15 6 C19 7 22 9 24 11 M15 11 C19 12 22 14 24 16 M15 16 C19 17 22 19 24 21 M15 21 C19 22 22 24 24 26 M15 26 C19 27 22 29 24 31" stroke={herbColors[2]} strokeWidth="0.5" opacity="0.5" />
+        <circle cx="15" cy="3" r="0.6" fill="#9333ea" opacity="0.7" />
+        <circle cx="14" cy="5" r="0.5" fill="#9333ea" opacity="0.6" />
+        <circle cx="16" cy="5" r="0.5" fill="#9333ea" opacity="0.6" />
+      </svg>
+    )
+  }
+}
+
+const FinalHerb: React.FC<HerbProps> = ({ index, obstacles }) => {
+  const leafRef = useRef<HTMLDivElement>(null)
+  const [leafType, setLeafType] = React.useState('')
+  
+  useEffect(() => {
+    if (!leafRef.current) return
+    
+    // Herb configuration
+    const types = ['thai-basil', 'cilantro', 'lemongrass', 'kaffir']
+    const typeIndex = Math.floor(Math.random() * types.length)
+    const selectedType = types[typeIndex]
+    setLeafType(selectedType)
+    
+    const size = 0.6 + Math.random() * 0.4
+    const speed = 1.5 + Math.random() * 1
+    const swayAmount = 30 + Math.random() * 20
+    const swaySpeed = 0.001 + Math.random() * 0.001
+    
+    // Starting position - randomize columns instead of sequential
+    const screenWidth = window.innerWidth
+    const columnWidth = screenWidth / 10
+    const randomColumn = Math.floor(Math.random() * 10)
+    let x = randomColumn * columnWidth + columnWidth / 2 + (Math.random() - 0.5) * columnWidth * 0.5
+    let y = -100 - Math.random() * 200
+    let vx = 0 // velocity x for bouncing
+    let vy = 0 // velocity y for bouncing
+    
+    const startTime = Date.now()
+    let mouseX = 0
+    let mouseY = 0
+    
+    // Track mouse position
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+    }
+    
+    window.addEventListener('mousemove', handleMouseMove)
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime
+      
+      // Apply velocity
+      x += vx
+      y += vy + speed
+      
+      // Apply damping to velocity
+      vx *= 0.98
+      vy *= 0.98
+      
+      // Stop micro-movements
+      if (Math.abs(vx) < 0.1) vx = 0
+      if (Math.abs(vy) < 0.1) vy = 0
+      
+      // Gentle sway
+      const swayX = Math.sin(elapsed * swaySpeed) * swayAmount
+      
+      // Mouse repulsion
+      const dx = x - mouseX
+      const dy = y - mouseY
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      
+      if (distance < 100 && distance > 0) {
+        const force = (1 - distance / 100) * 3
+        vx += (dx / distance) * force
+        vy += (dy / distance) * force
+      }
+      
+      // Reset when off screen
+      if (y > window.innerHeight + 100) {
+        y = -100 - Math.random() * 200
+        const newColumn = Math.floor(Math.random() * 10)
+        x = newColumn * columnWidth + columnWidth / 2 + (Math.random() - 0.5) * columnWidth * 0.5
+        vx = 0
+        vy = 0
+      }
+      
+      // Check obstacles collision with bouncing
+      let finalX = x + swayX
+      let finalY = y
+      
+      // Check logo first (it's always the first obstacle)
+      if (obstacles.length > 0 && obstacles[0].type === 'circle' && obstacles[0].radius) {
+        const logo = obstacles[0]
+        const logoRadius = logo.radius!
+        const centerX = logo.x + logoRadius
+        const centerY = logo.y + logoRadius
+        const dx = finalX - centerX
+        const dy = finalY - centerY
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        
+        if (distance < logoRadius + 50) { // Extra margin for logo
+          // Always push herb outside
+          const normalX = distance > 0 ? dx / distance : 1
+          const normalY = distance > 0 ? dy / distance : 0
+          
+          // Push herb well outside of logo
+          finalX = centerX + normalX * (logoRadius + 55)
+          finalY = centerY + normalY * (logoRadius + 55)
+          
+          // Strong bounce off logo
+          const dotProduct = vx * normalX + vy * normalY
+          vx = normalX * Math.abs(dotProduct) * 1.2
+          vy = normalY * Math.abs(dotProduct) * 1.2
+        }
+      }
+      
+      // Check other obstacles
+      for (let i = 1; i < obstacles.length; i++) {
+        const obstacle = obstacles[i]
+        if (obstacle.type === 'circle' && obstacle.radius) {
+          const centerX = obstacle.x + obstacle.radius
+          const centerY = obstacle.y + obstacle.radius
+          const dx = finalX - centerX
+          const dy = finalY - centerY
+          const distance = Math.sqrt(dx * dx + dy * dy)
+          
+          if (distance < obstacle.radius + 30) { // Increased boundary
+            // Always push herb outside, regardless of velocity direction
+            const normalX = distance > 0 ? dx / distance : 1
+            const normalY = distance > 0 ? dy / distance : 0
+            
+            // Push herb outside of obstacle
+            finalX = centerX + normalX * (obstacle.radius + 35)
+            finalY = centerY + normalY * (obstacle.radius + 35)
+            
+            // Reflect velocity
+            const dotProduct = vx * normalX + vy * normalY
+            vx -= 2 * dotProduct * normalX
+            vy -= 2 * dotProduct * normalY
+            
+            // Apply bounce damping
+            vx *= 0.7
+            vy *= 0.7
+            
+            // Ensure minimum velocity away from obstacle only if really stuck
+            if (Math.abs(vx) < 0.5 && Math.abs(vy) < 0.5) {
+              vx = normalX * 1.5
+              vy = normalY * 1.5
+            }
+          }
+        } else if (!obstacle.type || obstacle.type === 'rect') {
+          // Rectangle collision
+          const herbRadius = 30 // Increased for better boundary
+          
+          // Check if herb overlaps with rectangle
+          const closestX = Math.max(obstacle.x, Math.min(finalX, obstacle.x + obstacle.width))
+          const closestY = Math.max(obstacle.y, Math.min(finalY, obstacle.y + obstacle.height))
+          
+          const dx = finalX - closestX
+          const dy = finalY - closestY
+          const distance = Math.sqrt(dx * dx + dy * dy)
+          
+          if (distance < herbRadius) {
+            // Determine which edge we hit
+            const leftDist = Math.abs(finalX - obstacle.x)
+            const rightDist = Math.abs(finalX - (obstacle.x + obstacle.width))
+            const topDist = Math.abs(finalY - obstacle.y)
+            const bottomDist = Math.abs(finalY - (obstacle.y + obstacle.height))
+            
+            const minDist = Math.min(leftDist, rightDist, topDist, bottomDist)
+            
+            // Bounce based on which edge is closest
+            if (minDist === leftDist) {
+              vx = Math.abs(vx) * 0.6
+              finalX = obstacle.x - herbRadius
+            } else if (minDist === rightDist) {
+              vx = -Math.abs(vx) * 0.6
+              finalX = obstacle.x + obstacle.width + herbRadius
+            } else if (minDist === topDist) {
+              vy = Math.abs(vy) * 0.6
+              finalY = obstacle.y - herbRadius
+            } else {
+              vy = -Math.abs(vy) * 0.6
+              finalY = obstacle.y + obstacle.height + herbRadius
+            }
+          }
+        }
+      }
+      
+      if (leafRef.current) {
+        leafRef.current.style.transform = `translate(${finalX}px, ${finalY}px) scale(${size})`
+        leafRef.current.style.opacity = y < 0 ? '0' : '0.7'
+        
+        // Update position for next frame
+        x = finalX - swayX
+        y = finalY
+      }
+      
+      requestAnimationFrame(animate)
+    }
+    
+    // Start with randomized delay
+    setTimeout(() => {
+      animate()
+    }, Math.random() * 8000) // Random delay up to 8 seconds
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [index, obstacles])
+  
+  // Get appropriate dimensions based on herb type
+  const herbDimensions = {
+    'lemongrass': { width: 24, height: 65 },
+    'kaffir': { width: 32, height: 46 },
+    'cilantro': { width: 28, height: 32 },
+    'thai-basil': { width: 30, height: 36 }
+  }
+  
+  const dimensions = herbDimensions[leafType as keyof typeof herbDimensions] || herbDimensions['thai-basil']
+  
+  return (
+    <div 
+      ref={leafRef}
+      className="absolute"
+      style={{
+        left: 0,
+        top: 0,
+        width: `${dimensions.width}px`,
+        height: `${dimensions.height}px`,
+        opacity: 0,
+        transition: 'opacity 0.5s'
+      }}
+    >
+      <HerbSVG type={leafType} index={index} />
+    </div>
+  )
+}
+
+const FinalHerbs: React.FC<{ obstacles: any[] }> = ({ obstacles }) => {
+  const [isMobile, setIsMobile] = React.useState(false)
+  
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+  
+  const herbCount = isMobile ? 30 : 50
+  
+  return (
+    <div className="fixed inset-0 pointer-events-none z-30">
+      {/* Create herbs based on screen size */}
+      {[...Array(herbCount)].map((_, i) => (
+        <FinalHerb key={`herb-${i}`} index={i} obstacles={obstacles} />
+      ))}
+    </div>
+  )
+}
+
+export default FinalHerbs

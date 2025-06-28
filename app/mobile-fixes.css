@@ -1,0 +1,61 @@
+/* Mobile-specific fixes */
+
+/* Dynamic viewport height for mobile browsers */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari */
+  .h-screen {
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: 100dvh; /* Dynamic viewport height */
+  }
+}
+
+/* Android Chrome */
+@supports not (-webkit-touch-callout: none) {
+  .h-screen {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height */
+  }
+}
+
+/* Mobile-specific color rendering fixes */
+
+/* Force proper color rendering on iOS devices */
+@supports (-webkit-touch-callout: none) {
+  body:not(.dark) {
+    background-color: rgb(255, 251, 235) !important; /* amber-50 */
+    color: rgb(17, 24, 39) !important; /* gray-900 */
+  }
+  
+  /* Disable gradients on mobile for light mode */
+  .bg-gradient-to-br:not(.dark *) {
+    background-image: none !important;
+  }
+}
+
+/* Android-specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 768px) {
+  body:not(.dark) {
+    /* Use solid colors instead of gradients */
+    background: rgb(255, 251, 235) !important;
+    /* Force hardware acceleration */
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Disable backdrop filters on mobile light mode */
+@media (max-width: 768px) {
+  body:not(.dark) .backdrop-blur,
+  body:not(.dark) .backdrop-filter {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Fix for Samsung Internet Browser */
+@supports (-webkit-appearance: none) and (stroke-color: transparent) {
+  body:not(.dark) {
+    background-color: rgb(255, 251, 235) !important;
+    color: rgb(17, 24, 39) !important;
+  }
+}

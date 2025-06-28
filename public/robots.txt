@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /test
+Disallow: /test-herbs
+Disallow: /diagnostic
+Disallow: /deployment-info
+
+Sitemap: https://chunnthai.com.au/sitemap.xml
+
+# Crawl-delay for bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10

@@ -1,0 +1,162 @@
+/* Safari-specific fixes for better compatibility */
+
+/* Fix for Safari backdrop-filter issues */
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .backdrop-blur-sm {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  
+  .backdrop-blur-lg {
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+}
+
+/* Safari SVG filter fixes */
+@supports (-webkit-appearance: none) {
+  svg filter {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Safari transform fixes */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .transform {
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+    }
+    
+    /* Fix for Safari animation flicker */
+    .animate-float,
+    .animate-grain-fall,
+    .animate-shimmer,
+    .animate-gradient-shift {
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-perspective: 1000px;
+      perspective: 1000px;
+    }
+  }
+}
+
+/* Safari mobile touch event fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent callout on long press */
+  * {
+    -webkit-touch-callout: none;
+  }
+  
+  /* Smooth scrolling on iOS */
+  .overflow-auto,
+  .overflow-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix for iOS bounce scrolling */
+  body {
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  #__next {
+    height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Safari gradient text fix */
+@supports (-webkit-background-clip: text) {
+  .text-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* AGGRESSIVE SAFARI MOBILE TEXT FIX */
+@media (max-width: 768px) {
+  /* Override webkit-text-fill-color for all SVG elements on mobile Safari */
+  @supports (-webkit-touch-callout: none) {
+    svg,
+    svg * {
+      -webkit-text-fill-color: unset !important;
+    }
+    
+    .logo-container svg,
+    .logo-container svg * {
+      -webkit-text-fill-color: unset !important;
+    }
+    
+    svg[data-mobile="true"],
+    svg[data-mobile="true"] * {
+      -webkit-text-fill-color: unset !important;
+    }
+    
+    svg path {
+      -webkit-text-fill-color: unset !important;
+      fill: #2C2416 !important;
+    }
+    
+    svg text {
+      -webkit-text-fill-color: #000000 !important;
+      fill: #000000 !important;
+    }
+  }
+  
+  /* Target Safari/WebKit browsers specifically */
+  @media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+      .logo-container svg path {
+        -webkit-text-fill-color: unset !important;
+        fill: #2C2416 !important;
+      }
+      
+      .logo-container svg text {
+        -webkit-text-fill-color: #000000 !important;
+        fill: #000000 !important;
+      }
+    }
+  }
+}
+
+/* Fix for Safari flex issues */
+@supports (-webkit-appearance: none) and (not (-ms-ime-align: auto)) {
+  .flex {
+    display: -webkit-flex;
+    display: flex;
+  }
+  
+  .flex-col {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+  
+  .items-center {
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  
+  .justify-center {
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+}
+
+/* Safari animation performance */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (-webkit-appearance: none) {
+    * {
+      -webkit-transform: translateZ(0);
+    }
+  }
+}
