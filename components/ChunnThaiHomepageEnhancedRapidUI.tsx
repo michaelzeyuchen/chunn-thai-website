@@ -142,7 +142,7 @@ const ChunnLogo: React.FC<ChunnLogoProps> = ({ isDarkMode }) => {
 }
 
 // Enhanced contact button component
-const ContactButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isEmail = false, onClick }: { href: string; icon: any; color: string; label: string; isDarkMode: boolean; delay: number; isEmail?: boolean; onClick?: (e: any) => void }) => {
+const ContactButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isEmail = false, onClick }: { href?: string; icon: any; color: string; label: string; isDarkMode: boolean; delay: number; isEmail?: boolean; onClick?: (e: any) => void }) => {
   const [isHovered, setIsHovered] = useState(false)
   
   const handleClick = (e: React.MouseEvent) => {
