@@ -314,7 +314,7 @@ export default function ChunnThaiHomepageRapidUI() {
               transition={{ duration: 0.3 }}
               className="grid md:grid-cols-3 gap-6"
             >
-              {menuCategories[activeTab].map((item, index) => (
+              {menuCategories[activeTab as keyof typeof menuCategories].map((item: any, index: number) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
