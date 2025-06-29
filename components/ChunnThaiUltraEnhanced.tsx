@@ -19,7 +19,7 @@ const ZenHerbs = dynamic(() => import('./ZenHerbs'), {
 })
 
 // Enhanced Tooltip with Aceternity-style effects
-const Tooltip = ({ children, content, isDarkMode }) => {
+const Tooltip = ({ children, content, isDarkMode }: { children: React.ReactNode; content: string; isDarkMode: boolean }) => {
   const [showTooltip, setShowTooltip] = useState(false)
   
   return (
@@ -53,12 +53,12 @@ const Tooltip = ({ children, content, isDarkMode }) => {
 }
 
 // Aceternity-style Hover Card with mouse tracking
-const HoverCard = ({ children, isDarkMode }) => {
+const HoverCard = ({ children, isDarkMode }: { children: React.ReactNode; isDarkMode: boolean }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
   const cardRef = useRef(null)
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return
     const rect = cardRef.current.getBoundingClientRect()
     setMousePosition({
@@ -210,7 +210,7 @@ const ChunnLogo: React.FC<ChunnLogoProps> = ({ isDarkMode }) => {
 }
 
 // GSAP-enhanced magnetic button component
-const MagneticButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isEmail = false, onClick }) => {
+const MagneticButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isEmail = false, onClick }: { href?: string; icon: any; color: string; label: string; isDarkMode: boolean; delay: number; isEmail?: boolean; onClick?: (e: any) => void }) => {
   const [isHovered, setIsHovered] = useState(false)
   const buttonRef = useRef(null)
   const magneticRef = useRef(null)
@@ -220,7 +220,7 @@ const MagneticButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isE
     
     const button = magneticRef.current
     
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: React.MouseEvent) => {
       const rect = button.getBoundingClientRect()
       const x = e.clientX - rect.left - rect.width / 2
       const y = e.clientY - rect.top - rect.height / 2
@@ -251,7 +251,7 @@ const MagneticButton = ({ href, icon: Icon, color, label, isDarkMode, delay, isE
     }
   }, [])
   
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent) => {
     if (onClick) {
       e.preventDefault()
       onClick()
